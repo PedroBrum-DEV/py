@@ -1,12 +1,11 @@
-
+from sistema.desastres import analisar_desastres_por_cep
 from sistema.clima import Clima
 from sistema.endereco import Endereco
 from sistema.recomendacoes import Recomendacoes
 
- 
 def menu():
-    clima_api = Clima("834129b2f0d0445784c140119253005")
- 
+    clima_api = Clima()  # Agora usa MET Norway
+
     while True:
         print("""
 === Menu Interativo ===
@@ -16,7 +15,7 @@ def menu():
 4- Como posso receber doações
 """)
         opcao = input("Escolha uma opção: ")
- 
+
         if opcao == "1":
             cep = input("Digite o CEP: ")
             endereco = Endereco(cep)
@@ -26,7 +25,12 @@ def menu():
                 lat, lon = clima_api.obter_geolocalizacao(completo)
                 if lat and lon:
                     temp, vento, chuva = clima_api.obter_clima(lat, lon)
-                    print(f"\n🌤️ Clima em {completo}:\n🌡️ Temperatura: {temp}°C\n💨 Vento: {vento} km/h\n🌧️ Chuva: {chuva} mm")
+                    if temp is not None:
+                        print(f"\n🌤️ Clima em {completo}:\n🌡️ Temperatura: {temp}°C\n💨 Vento: {vento} m/s\n🌧️ Chuva: {chuva} mm")
+                    else:
+                        print("❌ Não foi possível obter dados climáticos.")
+                else:
+                    print("❌ Não foi possível obter geolocalização.")
         elif opcao == "2":
             tipo = input("Digite o tipo de desastre: ").lower()
             recomendador = Recomendacoes()
@@ -48,12 +52,10 @@ def menu():
             print("📦 Procure ONGs ou grupos de apoio locais. Centros de referência social (CRAS) também podem ajudar.")
         else:
             print("❌ Opção inválida.")
- 
+
         continuar = input("Deseja voltar ao menu? (s/n): ")
         if continuar.lower() != 's':
             print("👋 Encerrando...")
             break
- 
+
 menu()
- 
- 
