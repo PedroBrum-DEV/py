@@ -1,5 +1,7 @@
 class Recomendacoes:
     def __init__(self):
+        # Dicionário com tipos de desastres naturais e suas recomendações divididas em três fases:
+        # "antes" (prevenção), "durante" (ação durante o desastre) e "depois" (recuperação)
         self.tipos = {
             "inundacao": {
                 "antes": [
@@ -18,6 +20,7 @@ class Recomendacoes:
                     "Documente prejuízos para eventual indenização."
                 ]
             },
+            # Mesma estrutura para outros tipos de desastres...
             "alagamento": {
                 "antes": [
                     "Não descarte lixo em ruas e bueiros.",
@@ -120,9 +123,12 @@ class Recomendacoes:
         }
 
     def obter(self, tipo):
+        # Recebe o tipo de desastre e retorna as recomendações formatadas para as três fases
         info = self.tipos.get(tipo)
         if not info:
             return "Tipo de desastre não reconhecido."
+        
+        # Monta uma string organizada com as recomendações para antes, durante e depois do desastre
         return (
             f"🟡 ANTES:\n" + "\n".join(f"• {x}" for x in info["antes"]) +
             f"\n\n🔴 DURANTE:\n" + "\n".join(f"• {x}" for x in info["durante"]) +
